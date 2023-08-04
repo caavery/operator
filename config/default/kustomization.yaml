@@ -36,7 +36,10 @@ patches:
 # through a ComponentConfig type
 #- manager_config_patch.yaml
 
-# To enable the peerpod controllers
+# To enable the peerpod controllers and configure.
+- path: peerpods/runasnonroot.yaml
+- path: peerpods/ssh-volume.yaml
+- path: peerpods/ssh-mount.yaml
 - path: peerpods/peerpods-namespace.yaml
 - path: peerpods/enable-peerpods.yaml
   target:
