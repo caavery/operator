@@ -36,6 +36,15 @@ patches:
 # through a ComponentConfig type
 #- manager_config_patch.yaml
 
+# To enable the peerpod controllers
+- path: peerpods/peerpods-namespace.yaml
+- path: peerpods/enable-peerpods.yaml
+  target:
+    group: apps
+    kind: Deployment
+    name: controller-manager
+    version: v1
+
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix including the one in
 # crd/kustomization.yaml
 #- manager_webhook_patch.yaml

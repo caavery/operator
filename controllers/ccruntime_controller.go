@@ -57,6 +57,11 @@ type CcRuntimeReconciler struct {
 	Namespace string
 }
 
+const (
+	peerpodConfigCRName = "peerpodconfig-coco"
+	DEFAULT_PEER_PODS   = "10"
+)
+
 //+kubebuilder:rbac:groups=confidentialcontainers.org,resources=ccruntimes,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=confidentialcontainers.org,resources=ccruntimes/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=confidentialcontainers.org,resources=ccruntimes/finalizers,verbs=update
@@ -64,6 +69,12 @@ type CcRuntimeReconciler struct {
 //+kubebuilder:rbac:groups=apps,resources=daemonsets,verbs=get;list;watch;create;delete;update;patch
 //+kubebuilder:rbac:groups=node.k8s.io,resources=runtimeclasses,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups="",resources=namespaces,verbs=get;update
+//+kubebuilder:rbac:groups="",resources=nodes/status,verbs=patch
+//+kubebuilder:rbac:groups=confidentialcontainers.org,resources=peerpodconfigs,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=confidentialcontainers.org,resources=peerpodconfigs/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=confidentialcontainers.org,resources=peerpodconfigs/finalizers,verbs=update
+//+kubebuilder:rbac:groups="",resources=configmaps,verbs=create;get;update;list;watch
+//+kubebuilder:rbac:groups="",resources=secrets,verbs=create;get;update;list;watch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -415,7 +426,6 @@ func (r *CcRuntimeReconciler) processCcRuntimeInstallRequest() (ctrl.Result, err
 		} else if err != nil {
 			return ctrl.Result{}, err
 		}
-
 	}
 	return r.monitorCcRuntimeInstallation()
 
